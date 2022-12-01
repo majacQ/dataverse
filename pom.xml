@@ -281,7 +281,7 @@
             <version>6.0</version>
         </dependency>
         <!-- Rosuda Rengine and Rserve, packaged by org.nuiton.thirdparty -->
-        <!-- TODO: see if there's another, better maintained maven repository for Rosuda libraries? - L.A. -->
+        <!-- TODO: see if there's another better maintained maven repository for Rosuda libraries - L.A. -->
         <dependency>
             <groupId>org.nuiton.thirdparty</groupId>
             <artifactId>REngine</artifactId>
@@ -742,7 +742,7 @@
             <id>dev</id>
             <activation>
                 <!-- https://stackoverflow.com/questions/11824328/default-build-profile-for-maven -->
-                <!-- We set dev to true to developers don't have to run non-essential tests over and over. -->
+                <!-- We set dev to true so developers don't have to run non-essential tests over and over. -->
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
