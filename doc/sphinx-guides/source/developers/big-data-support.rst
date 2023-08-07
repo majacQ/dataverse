@@ -36,9 +36,31 @@ At present, one potential drawback for direct-upload is that files are only part
 
 ``./asadmin create-jvm-options "-Ddataverse.files.<id>.ingestsizelimit=<size in bytes>"``
 
+.. _s3-direct-upload-features-disabled:
 
-**IMPORTANT:** One additional step that is required to enable direct uploads via a Dataverse installation and for direct download to work with previewers is to allow cross site (CORS) requests on your S3 store. 
+Features that are Disabled if S3 Direct Upload is Enabled
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following features are disabled when S3 direct upload is enabled.
+
+- Unzipping of zip files. (See :ref:`compressed-files`.)
+- Extraction of metadata from FITS files. (See :ref:`fits`.)
+- Creation of NcML auxiliary files (See :ref:`netcdf-and-hdf5`.)
+- Extraction of a geospatial bounding box from NetCDF and HDF5 files (see :ref:`netcdf-and-hdf5`) unless :ref:`dataverse.netcdf.geo-extract-s3-direct-upload` is set to true.
+
+.. _cors-s3-bucket:
+
+Allow CORS for S3 Buckets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**IMPORTANT:** One additional step that is required to enable direct uploads via a Dataverse installation and for direct download to work with previewers and direct upload to work with dvwebloader (:ref:`folder-upload`) is to allow cross site (CORS) requests on your S3 store.
 The example below shows how to enable CORS rules (to support upload and download) on a bucket using the AWS CLI command line tool. Note that you may want to limit the AllowedOrigins and/or AllowedHeaders further.  https://github.com/gdcc/dataverse-previewers/wiki/Using-Previewers-with-download-redirects-from-S3 has some additional information about doing this.
+
+If you'd like to check the CORS configuration on your bucket before making changes:
+
+``aws s3api get-bucket-cors --bucket <BUCKET_NAME>``
+
+To proceed with making changes:
 
 ``aws s3api put-bucket-cors --bucket <BUCKET_NAME> --cors-configuration file://cors.json``
 
@@ -52,7 +74,7 @@ with the contents of the file cors.json as follows:
                 "AllowedOrigins": ["*"],
                 "AllowedHeaders": ["*"],
                 "AllowedMethods": ["PUT", "GET"],
-                "ExposeHeaders": ["ETag"]
+                "ExposeHeaders": ["ETag", "Accept-Ranges", "Content-Encoding", "Content-Range"]
              }
           ]
         }
